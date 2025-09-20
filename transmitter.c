@@ -40,6 +40,8 @@ void create_package(byte* pkg, FILE* fstream) {
 }
 
 void print_package(byte* pkg) {
+  printf("%3s %3s %3s %3s %3s %3s %3s %3s\n", "d0", "d1", "d2",
+        "pd0", "pd1", "ps0", "ps1", "s");
   for (int i = 0; i < 12; i++) {
     printf("%3d %3d %3d %3d %3d %3d %3d %3d\n", pkg[i].d0, pkg[i].d1, 
         pkg[i].d2, pkg[i].pd0, pkg[1].pd1, pkg[i].ps0, pkg[i].ps1, pkg[i].s);
