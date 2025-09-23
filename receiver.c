@@ -43,6 +43,39 @@ void read_package(FILE* fstream, byte* pkg, int* zf, int* c1, int* interrupt_fla
   }
   *c1 = 0;
 }
+
+void simple_data_parity(byte *pkg, int *interrupt_flag) {
+  for (int i = 0; i < 4; i++) {
+    int d[3][3] = {pkg[3 * i].d0, pkg[3 * i].d1, pkg[3 * i].d2,
+                   pkg[3 * i + 1].d0, pkg[3 * i + 1].d1, pkg[3 * i + 1].d2,
+                   pkg[3 * i + 2].d0, pkg[3 * i + 2].d1, pkg[3 * i + 2].d2};
+    int par[6] = {0};
+    for (int j = 0; j < 3; j++) {
+      for (int k = 0; k < 3; k++) {
+        par[j] ^= d[j][k];
+        par[j + 3] ^= d[k][2 - j];
+      }
+    }
+    int par_data[] = {pkg[3 * i].pd0, pkg[3 * i].pd1,
+                      pkg[3 * i + 1].pd0, pkg[3 * i + 1].pd1,
+                      pkg[3 * i + 2].pd0, pkg[3 * i + 2].pd1};
+    for (int k = 0; k < 6; k++) {
+      if (par_data[k] != par[k]) {
+        *interrupt_flag = 1;
+        printf("DATA ERROR");
+        return;
+      }
+    }
+  }
+  for (int i = 0; i < 12; i++) {
+    int s = pkg[i].s + pkg[i].ps0 + pkg[i].ps1;
+    if (s != 3 && s != 0) {
+      printf("SYNC BYTE ERROR");
+      *interrupt_flag = 1;
+      return;
+    }
+  }
+}
   
 void data_parity(byte* pkg, int* interrupt_flag){
   if (interrupt_flag){

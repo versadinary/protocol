@@ -7,4 +7,6 @@ void read_package(FILE* fstream, byte* pkg, int* zf, int* c1, int* interrupt_fla
 
 void data_parity(byte* pkg, int* interrupt_flag);
 
+void simple_data_parity(byte* pkg, int* interrupt_flag);
+
 #endif
