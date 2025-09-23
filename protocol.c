@@ -72,7 +72,7 @@ void write_package(FILE* dest, byte* pkg) {
 
 int main() {
   byte pkg1[12] = {0};
-  FILE* ifs = fopen("sensors", "r");
+  FILE* ifs = fopen("./transmitter_data", "r");
   create_package(pkg1, ifs);
   fclose(ifs);
   printf("%3s %3s %3s %3s %3s %3s %3s %3s\n", "d0", "d1", "d2",
@@ -83,7 +83,7 @@ int main() {
     byte_to_hex(pkg1[i], hex);
     printf("%s\n", hex);
   }
-  FILE* ofs = fopen("pkg_tr", "a");
+  FILE* ofs = fopen("./receiver_data", "a");
   write_package(ofs, pkg1);
   
 
