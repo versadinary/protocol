@@ -17,4 +17,8 @@ void create_package(byte* pkg, FILE* fstream);
 
 void print_package(byte* pkg);
 
+void byte_to_hex(byte b, char* dest);
+
+void write_package(FILE* dest, byte* pkg);
+
 #endif

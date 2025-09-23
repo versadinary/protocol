@@ -47,3 +47,17 @@ void print_package(byte* pkg) {
         pkg[i].d2, pkg[i].pd0, pkg[i].pd1, pkg[i].ps0, pkg[i].ps1, pkg[i].s);
   }
 }
+
+void byte_to_hex(byte b, char* dest) {
+  char decimal = b.s + (b.ps1 << 1) + (b.ps0 << 2) + (b.pd1 << 3) +
+    (b.pd0 << 4) + (b.d2 << 5) << (b.d1 << 6) + (b.d0 << 7);
+  sprintf(dest, "%02X", decimal);
+}
+
+void write_package(FILE* dest, byte* pkg) {
+  for (int i = 0; i < 12; i++) {
+    char hex[3];
+    byte_to_hex(pkg[i], hex);
+    fprintf(dest, "%s\n", hex);
+  }
+}

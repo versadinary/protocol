@@ -56,13 +56,36 @@ void print_package(byte* pkg) {
   }
 }
 
+void byte_to_hex(byte b, char* dest) {
+  char decimal = b.s + (b.ps1 << 1) + (b.ps0 << 2) + (b.pd1 << 3) +
+    (b.pd0 << 4) + (b.d2 << 5) << (b.d1 << 6) + (b.d0 << 7);
+  sprintf(dest, "%02X", decimal);
+}
+
+void write_package(FILE* dest, byte* pkg) {
+  for (int i = 0; i < 12; i++) {
+    char hex[3];
+    byte_to_hex(pkg[i], hex);
+    fprintf(dest, "%s\n", hex);
+  }
+}
+
 int main() {
   byte pkg1[12] = {0};
-  FILE* ifs = fopen("pack1", "r");
+  FILE* ifs = fopen("sensors", "r");
   create_package(pkg1, ifs);
+  fclose(ifs);
   printf("%3s %3s %3s %3s %3s %3s %3s %3s\n", "d0", "d1", "d2",
       "pd0", "pd1", "ps0", "ps1", "s");
   print_package(pkg1);
+  for (int i = 0; i < 12; i++) {
+    char hex[3];
+    byte_to_hex(pkg1[i], hex);
+    printf("%s\n", hex);
+  }
+  FILE* ofs = fopen("pkg_tr", "a");
+  write_package(ofs, pkg1);
+  
 
   return 0;
 } 
