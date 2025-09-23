@@ -24,7 +24,7 @@ int main() {
   int interrupt_flag = 0;
   read_package(receiver, receiver_pkg, &zero_flag, &count1, &interrupt_flag);
   print_package(receiver_pkg);
-  data_parity(receiver_pkg, &interrupt_flag);
+  simple_data_parity(receiver_pkg, &interrupt_flag);
   fclose(receiver);
 
   return 0;

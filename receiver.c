@@ -56,13 +56,13 @@ void simple_data_parity(byte *pkg, int *interrupt_flag) {
         par[j + 3] ^= d[k][2 - j];
       }
     }
-    int par_data[] = {pkg[3 * i].pd0, pkg[3 * i].pd1,
-                      pkg[3 * i + 1].pd0, pkg[3 * i + 1].pd1,
-                      pkg[3 * i + 2].pd0, pkg[3 * i + 2].pd1};
+    int par_data[] = {pkg[3 * i].pd0, pkg[3 * i + 1].pd0,
+                      pkg[3 * i + 2].pd0, pkg[3 * i].pd1,
+                      pkg[3 * i + 1].pd1, pkg[3 * i + 2].pd1};
     for (int k = 0; k < 6; k++) {
       if (par_data[k] != par[k]) {
         *interrupt_flag = 1;
-        printf("DATA ERROR");
+        printf("DATA ERROR\n");
         return;
       }
     }
@@ -70,7 +70,7 @@ void simple_data_parity(byte *pkg, int *interrupt_flag) {
   for (int i = 0; i < 12; i++) {
     int s = pkg[i].s + pkg[i].ps0 + pkg[i].ps1;
     if (s != 3 && s != 0) {
-      printf("SYNC BYTE ERROR");
+      printf("SYNC BYTE ERROR\n");
       *interrupt_flag = 1;
       return;
     }
