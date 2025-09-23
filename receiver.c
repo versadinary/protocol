@@ -13,7 +13,7 @@ void hex_to_byte(int hex, byte* b) {
   b->d0 = (hex >> 7) % 2;
 }
 
-// zf - zero flag
+// zf - zero flag, initially -1 (before first package)
 // c1 - count ones
 void read_package(FILE* fstream, byte* pkg, int* zf, int* c1, int* interrupt_flag) {
   int count = 0;
@@ -23,7 +23,7 @@ void read_package(FILE* fstream, byte* pkg, int* zf, int* c1, int* interrupt_fla
     if (*zf && *c1 != 10)
       *interrupt_flag = 1;
     *c1 += pkg[count].s;
-    *zf = !pkg[count].s;
+    if (pkg[count].s == 0) *zf = 1;
   }
 }
   
