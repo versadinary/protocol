@@ -13,17 +13,21 @@ void hex_to_byte(int hex, byte* b) {
   b->d0 = (hex >> 7) % 2;
 }
 
-void read_package(FILE* fstream, byte* pkg, int* zf, int* interrupt_flag) {
+// zf - zero flag
+// c1 - count ones
+void read_package(FILE* fstream, byte* pkg, int* zf, int* c1, int* interrupt_flag) {
   int count = 0;
   int hex;
   while (count < 12 && fscanf(fstream, "%x", &hex) == 1) {
     hex_to_byte(hex, &pkg[count]);
-
-    if ()
+    if (*zf && *c1 != 10)
+      *interrupt_flag = 1;
+    *c1 += pkg[count].s;
+    *zf = !pkg[count].s;
   }
 }
   
-void data_parity(byte* pkg, int interrupt_flag) {
+void data_parity(byte* pkg, int* interrupt_flag) {
 
 }
 
