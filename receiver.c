@@ -20,7 +20,7 @@ void read_package(FILE* fstream, byte* pkg, int* zf, int* c1, int* interrupt_fla
   int hex;
   while (count < 12 && fscanf(fstream, "%x", &hex) == 1) {
     hex_to_byte(hex, &pkg[count]);
-    if (*zf && *c1 != 10)
+    if (*zf == 1 && *c1 != 10)
       *interrupt_flag = 1;
     *c1 += pkg[count].s;
     if (pkg[count].s == 0) *zf = 1;
