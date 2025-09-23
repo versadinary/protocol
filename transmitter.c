@@ -22,14 +22,14 @@ void create_package(byte* pkg, FILE* fstream) {
       triad[k]->pd0 = triad[k]->d0 ^ triad[k]->d1 ^ triad[k]->d2;
     }
     triad[0]->pd1 = 0;
-    for (int i = 0; i < 3; i++)
-      triad[0]->pd1 = triad[i]->d2;
+    for (int k = 0; k < 3; k++)
+      triad[0]->pd1 ^= triad[k]->d2;
     triad[1]->pd1 = 0;
-    for (int i = 0; i < 3; i++)
-      triad[1]->pd1 = triad[i]->d2;
+    for (int k = 0; k < 3; k++)
+      triad[1]->pd1 ^= triad[k]->d1;
     triad[2]->pd1 = 0;
-    for (int i = 0; i < 3; i++)
-      triad[2]->pd1 = triad[i]->d2;
+    for (int k = 0; k < 3; k++)
+      triad[2]->pd1 ^= triad[k]->d0;
   }
   pkg[0].ps0 = 0;
   pkg[0].s = 0;
@@ -44,6 +44,6 @@ void print_package(byte* pkg) {
         "pd0", "pd1", "ps0", "ps1", "s");
   for (int i = 0; i < 12; i++) {
     printf("%3d %3d %3d %3d %3d %3d %3d %3d\n", pkg[i].d0, pkg[i].d1, 
-        pkg[i].d2, pkg[i].pd0, pkg[1].pd1, pkg[i].ps0, pkg[i].ps1, pkg[i].s);
+        pkg[i].d2, pkg[i].pd0, pkg[i].pd1, pkg[i].ps0, pkg[i].ps1, pkg[i].s);
   }
 }
