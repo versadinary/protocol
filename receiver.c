@@ -18,20 +18,30 @@ void hex_to_byte(int hex, byte* b) {
 void read_package(FILE* fstream, byte* pkg, int* zf, int* c1, int* interrupt_flag) {
   int count = 0;
   int hex;
+  if (*zf == 0 && pkg[count].s == 1) {
+    *interrupt_flag = 1;
+    printf("DELIVERY FAILED\n");
+  }
   while (count < 12 && fscanf(fstream, "%x", &hex) == 1) {
     hex_to_byte(hex, &pkg[count]);
+    if (pkg[count].s == 0) *zf = !(*zf);
+    if (*zf == 0 && count != 11) {
+      printf("DELIVERY FAILED\n");
+      return;
+    }
+    if (count == 0) {
+      count++;
+      continue;
+    }
     if (pkg[count].s == 0 && *zf == 1 && *c1 != 10) {
       *interrupt_flag = 1;
-      printf("PACKAGE IS CORRUPTED AT POSITION %d. ABORTED.", *c1);
+      printf("DELIVERY FAILED\n");
       return; 
     }
     *c1 += pkg[count].s;
-    if (pkg[count].s == 0) *zf = 1;
     count++;
   }
-  *zf = 0;
   *c1 = 0;
-  printf("PACKAGE IS SUCCESSFULLY DELIVERED\n");
 }
   
 void data_parity(byte* pkg, int* interrupt_flag) {
