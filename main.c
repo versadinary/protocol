@@ -19,7 +19,10 @@ int main() {
 
   FILE* receiver = fopen("./receiver_data", "r");
   byte receiver_pkg[12];
-  read_package(receiver, receiver_pkg);
+  int zero_flag = 0;
+  int count1 = 0;
+  int interrupt_flag = 0;
+  read_package(receiver, receiver_pkg, &zero_flag, &count1, &interrupt_flag);
   print_package(receiver_pkg);
   fclose(receiver);
 

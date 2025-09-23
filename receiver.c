@@ -22,6 +22,7 @@ void read_package(FILE* fstream, byte* pkg, int* zf, int* c1, int* interrupt_fla
     hex_to_byte(hex, &pkg[count]);
     if (pkg[count].s == 0 && *zf == 1 && *c1 != 10) {
       *interrupt_flag = 1;
+      printf("PACKAGE IS CORRUPTED AT POSITION %d. ABORTED.", *c1);
       return; 
     }
     *c1 += pkg[count].s;
@@ -30,6 +31,7 @@ void read_package(FILE* fstream, byte* pkg, int* zf, int* c1, int* interrupt_fla
   }
   *zf = 0;
   *c1 = 0;
+  printf("PACKAGE IS SUCCESSFULLY DELIVERED\n");
 }
   
 void data_parity(byte* pkg, int* interrupt_flag) {
