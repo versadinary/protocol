@@ -76,7 +76,7 @@ void simple_data_parity(byte *pkg, int *interrupt_flag) {
     }
   }
 }
-  
+
 void data_parity(byte* pkg, int* interrupt_flag){
   if (interrupt_flag){
     printf("incorrect pkg");
